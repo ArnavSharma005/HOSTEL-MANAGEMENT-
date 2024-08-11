@@ -1,5 +1,3 @@
-
-import studentModel from "../model/Student.js"
 import Issue from "../model/Issue.js"
 
 export const addIssue= async(req,res)=>{

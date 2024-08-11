@@ -22,9 +22,12 @@ import StudentRouter from "./src/routes/studentRoutes.js"
 app.use("/api/v1", StudentRouter)
 
 //worker routes
-
 import workerRouter from "./src/routes/workerRoutes.js"
 app.use("/api/v1", workerRouter)
+
+//admin routes
+import adminRouter from "./src/routes/adminRoutes.js"
+app.use("/api/v1", adminRouter)
 
 app.get("/", (req, res) => {
   res.send("Welcome to the Hostel Management System")
