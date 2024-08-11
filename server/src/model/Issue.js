@@ -45,6 +45,10 @@ const IssueSchema = new mongoose.Schema({
     default: "123",
     //required: true,
   },
+  Student:{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Student"
+  }
 })
 
 const Issue = mongoose.model("Issue", IssueSchema)
