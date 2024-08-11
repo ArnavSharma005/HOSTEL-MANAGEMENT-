@@ -1,4 +1,4 @@
-const mongoose = require("mongoose")
+import mongoose from "mongoose"
 const IssueSchema = new mongoose.Schema({
   IssueType: {
     type: String,
@@ -25,8 +25,8 @@ const IssueSchema = new mongoose.Schema({
     default: false,
   },
   AssignedTo: {
-    type: String,
-    default: "",
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Worker",
   },
   HostelNo: {
     type: String,
@@ -43,7 +43,7 @@ const IssueSchema = new mongoose.Schema({
   Otp: {
     type: String,
     default: "123",
-    required: true,
+    //required: true,
   },
 })
 

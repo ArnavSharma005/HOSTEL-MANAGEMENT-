@@ -17,6 +17,10 @@ connectDB()
 import userRouter from "./src/routes/userRoutes.js"
 app.use("/api/v1", userRouter)
 
+//student routes
+import StudentRouter from "./src/routes/studentRoutes.js"
+app.use("/api/v1", StudentRouter)
+
 app.get("/", (req, res) => {
   res.send("Welcome to the Hostel Management System")
 })
