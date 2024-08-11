@@ -4,13 +4,14 @@ const userRouter = express.Router()
 import {
   signupAdmin,
   signupStudent,
-  loginAdmin,
-  loginStudent,
+  signupWorker,
+  login,
 } from "../controllers/userController.js"
 
 userRouter.post("/student/signup", signupStudent)
-userRouter.post("/student/login", loginStudent)
+
 userRouter.post("/admin/signup", signupAdmin)
-userRouter.post("/admin/login", loginAdmin)
+userRouter.post("/worker/signup", signupWorker)
+userRouter.post("/login", login)
 
 export default userRouter
