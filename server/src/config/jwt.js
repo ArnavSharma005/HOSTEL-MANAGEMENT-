@@ -1,6 +1,6 @@
-const jwt = require('jsonwebtoken');
+import jwt from 'jsonwebtoken';
 
-const jwtAuthMiddleware = (req, res, next) => {
+export const jwtAuthMiddleware = (req, res, next) => {
 
     // first check request headers has authorization or not
     const authorization = req.headers.authorization
@@ -25,9 +25,8 @@ const jwtAuthMiddleware = (req, res, next) => {
 
 
 // Function to generate JWT token
-const generateToken = (userData) => {
+export const generateToken = (userData) => {
     // Generate a new JWT token using user data
     return jwt.sign(userData, process.env.JWT_SECRET/*, {expiresIn: 30000}*/);
 }
 
-module.exports = {jwtAuthMiddleware, generateToken};

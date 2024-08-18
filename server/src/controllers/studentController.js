@@ -1,7 +1,11 @@
 import Issue from "../model/Issue.js"
 
 export const addIssue= async(req,res)=>{
-    const {IssueType,Description,HostelNo,RoomNo,MobileNo,Otp,Student}=req.body
+    const HostelNo = req.user.hostel;
+    const Student = req.user.id;
+    const RoomNo = req.user.room;
+    const MobileNo = req.user.mobile;
+    const {IssueType,Description,Otp}=req.body
     const newIssue = new Issue({
         IssueType,
         Description,
@@ -20,7 +24,7 @@ export const addIssue= async(req,res)=>{
 }
 export const listIssues= async(req,res)=>{
     try{
-        const issues = await Issue.find({Student:req.body.Student});
+        const issues = await Issue.find({Student:req.user.id});
         res.status(200).json(issues)
     }catch(err){
         res.status(500).json(err)

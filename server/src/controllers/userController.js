@@ -2,6 +2,7 @@ import studentModel from "../model/Student.js"
 import adminModel from "../model/Admin.js"
 import workerModel from "../model/Worker.js"
 import bcrypt from "bcryptjs"
+import {jwtAuthMiddleware, generateToken} from "../config/jwt.js"
 //signup student
 
 export const signupStudent = async (req, res) => {
@@ -28,11 +29,18 @@ export const signupStudent = async (req, res) => {
     })
 
     const savedStudent = await newStudent.save()
-
+    const payload={
+      id:savedStudent._id, 
+      hostel:savedStudent.hostel,
+      room:savedStudent.room,
+      mobile:savedStudent.mobile,
+    }
+    const token = generateToken(payload);
     res.json({
       msg: "Student registered successfully",
       data: savedStudent,
       error: false,
+      token: token
     })
   } catch (error) {
     console.error(error)
@@ -137,6 +145,14 @@ export const login = async (req, res) => {
         error: false,
       })
     } else if (student) {
+      const savedStudent = student;
+      const payload={
+        id:savedStudent._id, 
+        hostel:savedStudent.hostel,
+        room:savedStudent.room,
+        mobile:savedStudent.mobile,
+      }
+      const token = generateToken(payload);
       const isMatch = await bcrypt.compare(password, student.password)
       if (!isMatch) {
         return res.status(400).json({ msg: "Invalid password", error: true })
@@ -145,6 +161,7 @@ export const login = async (req, res) => {
         msg: "Login successful",
         data: { userData: student, role: "student" },
         error: false,
+        token: token
       })
     } else if (worker) {
       const isMatch = await bcrypt.compare(password, worker.password)
