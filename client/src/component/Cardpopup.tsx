@@ -1,6 +1,7 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect ,useState} from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-
+import Cookies from 'js-cookie';
+import axios from 'axios';
 interface PopupCardProps {
   isOpen: boolean;
   togglePopup: () => void;
@@ -8,10 +9,17 @@ interface PopupCardProps {
 
 const PopupCard: React.FC<PopupCardProps> = ({ isOpen, togglePopup }) => {
 
+  const [userType, setUserType] = useState('')
+  const [IssueType,setIssueType]=useState('Electrical')
+  const [Description,setDescription]=useState('')
+    useEffect(()=>{
+    setUserType(Cookies.get("token"))
+  
+  },[])
 
 
   const cardRef = useRef<HTMLDivElement | null>(null);
-  const userType = 'worker'; // Change this to 'worker' or 'supervisor' to test different cases
+   // Change this to 'worker' or 'supervisor' to test different cases
 
  
 
@@ -20,6 +28,42 @@ const PopupCard: React.FC<PopupCardProps> = ({ isOpen, togglePopup }) => {
     visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
     exit: { opacity: 0, y: 50, transition: { duration: 0.3 } },
   };
+   // If you're using js-cookie for managing cookies
+  
+  const handleSubmit = async (event: any) => {
+    event.preventDefault(); // Prevent form submission if this is triggered by a form
+  
+    const token = Cookies.get("user"); // Retrieve token from cookies
+   
+  
+    try {
+      // Perform the POST request with token in headers
+      const response = await axios.post(
+        'http://localhost:4000/api/v1/student/addIssue',
+        {
+          IssueType: IssueType,
+          Description: Description,
+        },
+        {
+          headers: {
+            'Authorization': `Bearer ${token}`, // Attach token in headers
+            'Content-Type': 'application/json', // Ensure Content-Type is correct
+          },
+        }
+      );
+  
+      // If response is successful
+      console.log("Response:", response.data);
+      
+      // Trigger any additional behavior like toggling popups
+      togglePopup(); // Call the popup function if required
+    } catch (error:any) {
+      // Handle errors
+      console.error("Error occurred:", error.response?.data || error.message);
+    }
+  };
+  
+
 
   return (
     <AnimatePresence>
@@ -61,6 +105,7 @@ const PopupCard: React.FC<PopupCardProps> = ({ isOpen, togglePopup }) => {
                       Issue Type
                     </label>
                     <select
+                    onChange={(e)=>setIssueType(e.target.value)}
                       id="issueType"
                       name="issueType"
                       className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-custom-dark-blue focus:border-custom-dark-blue sm:text-sm rounded-md"
@@ -78,6 +123,8 @@ const PopupCard: React.FC<PopupCardProps> = ({ isOpen, togglePopup }) => {
                       Description
                     </label>
                     <textarea
+                    onChange={(e)=>setDescription(e.target.value)}
+
                       id="issueDescription"
                       name="issueDescription"
                       rows="4"
@@ -87,7 +134,7 @@ const PopupCard: React.FC<PopupCardProps> = ({ isOpen, togglePopup }) => {
                   </li>
                   <li>
                     <button
-                      onClick={togglePopup}
+                      onClick={handleSubmit}
                       type="button"
                       className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-custom-dark-blue hover:bg-custom-orange focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-custom-dark-blue"
                     >

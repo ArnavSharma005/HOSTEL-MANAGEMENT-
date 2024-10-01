@@ -2,6 +2,10 @@ import AnnouncementComponent from "../component/Announcement"
 
 
 const Announcement=()=>{
+
+
+
+
   return(
     <>
     <div id="bodyAnnounce" className="bg-custom-dark-blue h-[100vh] w-[75vw]">

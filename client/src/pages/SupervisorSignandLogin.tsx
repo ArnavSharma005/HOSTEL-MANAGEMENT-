@@ -1,55 +1,124 @@
-import React from "react";
-import * as Components from "../component/Sign";
+import React from 'react'
+import img from '../assets/supervisor.png'
+import { useState } from 'react'
+//@ts-ignore
+import Cookies from 'js-cookie'
+import axios from 'axios'
+import { useNavigate } from 'react-router-dom'
+const SupervisorSignandLogin = () => {
+const navigate = useNavigate();
+const [formData, setFormData] = useState({
+  name: '',
+  email: '',
+  hostel: '',
+  mobile: '',
+  password: '',
+})
 
-const SupervisorSignAndLogin: React.FC = () => {
-  const [signIn, toggle] = React.useState(true);
+const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  setFormData({ ...formData, [e.target.name]: e.target.value });
+}
+
+const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  e.preventDefault();
+  try {
+    const res=await axios.post('http://localhost:4000/api/v1/admin/signup',formData)
+    Cookies.set('token', "supervisor");
+    Cookies.set('user', res.data.token);
+    navigate('/Dashboard');
+    console.log(res);
+  }
+  catch (err) {
+    console.log(err);
+  }
+}
+
+
+
 
   return (
-    <Components.Container>
-      <Components.SignUpContainer signingIn={signIn}>
-        <Components.Form>
-          <Components.Title>Create Account</Components.Title>
-          <Components.Input type="text" placeholder="Name" />
-          <Components.Input type="text" placeholder="Hostel Number" />
-          <Components.Input type="tel" placeholder="Phone Number" />
-          <Components.Input type="email" placeholder="Email" />
-          <Components.Input type="password" placeholder="Password" />
-          <Components.Button>Sign Up</Components.Button>
-        </Components.Form>
-      </Components.SignUpContainer>
-      <Components.SignInContainer signingIn={signIn}>
-        <Components.Form>
-          <Components.Title>Sign in</Components.Title>
-          <Components.Input type="email" placeholder="Email" />
-          <Components.Input type="password" placeholder="Password" />
-          <Components.Anchor href="#">Forgot your password?</Components.Anchor>
-          <Components.Button>Sign In</Components.Button>
-        </Components.Form>
-      </Components.SignInContainer>
-      <Components.OverlayContainer signingIn={signIn}>
-        <Components.Overlay signingIn={signIn}>
-          <Components.LeftOverlayPanel signingIn={signIn}>
-            <Components.Title>Hello, Friend!</Components.Title>
-            <Components.Paragraph>
-              Enter your personal details and start your journey with us
-            </Components.Paragraph>
-            <Components.GhostButton onClick={() => toggle(true)}>
-              Sign In
-            </Components.GhostButton>
-          </Components.LeftOverlayPanel>
-          <Components.RightOverlayPanel signingIn={signIn}>
-            <Components.Title>Welcome Back!</Components.Title>
-            <Components.Paragraph>
-              To keep connected with us, please login with your personal info
-            </Components.Paragraph>
-            <Components.GhostButton onClick={() => toggle(false)}>
-              Sign Up
-            </Components.GhostButton>
-          </Components.RightOverlayPanel>
-        </Components.Overlay>
-      </Components.OverlayContainer>
-    </Components.Container>
-  );
-};
+    <>
+    <h2 className='text-5xl text-black text-center mt-[5vh] font-extrabold'>Sign up Admin</h2>
+        <div className='flex bg-black w-[50vw] absolute left-[25%] top-[20%]'>
+    {/* Left side with image */}
+    <div className='w-[50%] bg-white'>
+      <img src={img} alt="Image" className='h-[50vh]' />
+    </div>
+  
+    {/* Right side with form */}
+    <div className='w-[50%] flex flex-col justify-center p-5 text-white'>
+      <form action="" onSubmit={handleSubmit}>
+        
+        <div className='mb-4'>
+          <label>Name:</label>
+          <input 
+            type="text" 
+            name="name" 
+            value={formData.name} 
+            onChange={handleChange} 
+            className='w-full p-2 rounded bg-gray-800 text-white' 
+            required 
+          />
+        </div>
+  
+  
+        <div className='mb-4'>
+          <label>Email:</label>
+          <input 
+            type="email" 
+            name="email" 
+            value={formData.email} 
+            onChange={handleChange} 
+            className='w-full p-2 rounded bg-gray-800 text-white' 
+            required 
+          />
+        </div>
+  
+        <div className='mb-4'>
+          <label>Hostel:</label>
+          <input 
+            type="text" 
+            name="hostel" 
+            value={formData.hostel} 
+            onChange={handleChange} 
+            className='w-full p-2 rounded bg-gray-800 text-white' 
+            required 
+          />
+        </div>
+  
+        <div className='mb-4'>
+          <label>Mobile:</label>
+          <input 
+            type="text" 
+            name="mobile" 
+            value={formData.mobile} 
+            onChange={handleChange} 
+            className='w-full p-2 rounded bg-gray-800 text-white' 
+            required 
+          />
+        </div>
+  
+        <div className='mb-4'>
+          <label>Password:</label>
+          <input 
+            type="password" 
+            name="password" 
+            value={formData.password} 
+            onChange={handleChange} 
+            className='w-full p-2 rounded bg-gray-800 text-white' 
+            required 
+          />
+        </div>
+  
+  
+        <button type="submit" className='w-full p-2 bg-green-600 rounded'>Submit</button>
+      </form>
+    </div>
+  </div>
+  </>
 
-export default SupervisorSignAndLogin;
+  )
+
+}
+
+export default SupervisorSignandLogin

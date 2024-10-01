@@ -1,9 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import axios from 'axios' // Make sure to import axios if you are using it
+import Cookies from 'js-cookie';
 
 const Navbar = () => {
-  const [userType, setUserType] = useState('student')
+  const [userType, setUserType] = useState('')
+
+useEffect(()=>{
+  setUserType(Cookies.get("token"))
+
+},[])
 
   // useEffect(() => {
   //   const fetch = async () => {

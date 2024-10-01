@@ -3,21 +3,38 @@ import ComplaintList from '../component/ComplaintList'
 import PopupCard from '../component/Cardpopup'
 import { usePopup } from '../context api/toggle'
 import PopupAnnounce from '../component/PopupAnnnounce'
+//@ts-ignore
+import Cookies from 'js-cookie';
 import Emergency from '../component/Emergency'
+import { set } from 'react-hook-form'
+import axios from 'axios'
 const Dashboard = () => {
 const {isOpen,togglePopup,toggleAnnounce,emergency,announce,toggleEmergency}=usePopup()
-  const [userType,setUserType]=useState('student')
+  const [userType,setUserType]=useState('')
   const [Complaints,setComplaints]=useState([{}])
+  const[user,setUser]=useState({})
   useEffect(() => {
     
   const fetch=async()=>{
-   const UserData=await axios.get('')
-   setUserType(UserData.data.userType)
-   if(userType=='student')
-   {
-    const data=await axios.get('')
-    setComplaints(data.Complaints)
-   }
+
+  setUserType(Cookies.get('token'))
+setUser(Cookies.get('user'))
+console.log(user)
+const x=Cookies.get('user')
+setUser(JSON.parse(x))
+
+    try{
+      if(userType=='student')
+      {
+        const res=await axios.get('http://localhost:4000/api/v1/student/listIssues',{headers:{Authorization:`Bearer ${Cookies.get('user')}`}})
+
+      }
+    }
+    catch(err)
+    {
+      console.log
+    }
+
   }
   fetch()
   }, [])
@@ -29,7 +46,7 @@ const {isOpen,togglePopup,toggleAnnounce,emergency,announce,toggleEmergency}=use
     {
       return(
         <>
-         <button type="button" className="text-white absolute font-bold text-custom-dark-blue   top-8 right-[16vw] bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br   rounded-lg  p-2 text-center me-2 mb-2" onClick={toggleEmergency}>Emergency</button>
+         <button type="button" className="absolute font-bold text-custom-dark-blue   top-8 right-[16vw] bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br   rounded-lg  p-2 text-center me-2 mb-2" onClick={toggleEmergency}>Emergency</button>
         <button className='absolute top-8 right-10 text-custom-dark-blue bg-custom-gray p-2 rounded-md' onClick={togglePopup}> Complaint</button>
         <div className={` ${isOpen||emergency ? 'blur' : ''}`}>
        <div className={`h-[50vh]  w-[75vw] bg-custom-dark-blue`}>
@@ -39,7 +56,7 @@ const {isOpen,togglePopup,toggleAnnounce,emergency,announce,toggleEmergency}=use
 
        <div className={`h-[50vh]  w-[75vw] bg-custom-dark-blue`}>
         <p className='text-custom-orange pl-10 text-5xl pt-10'>Resolved Complaints</p>
-        <ComplaintList></ComplaintList>
+       coming soon
        </div>
        
        </div>
@@ -61,14 +78,14 @@ const {isOpen,togglePopup,toggleAnnounce,emergency,announce,toggleEmergency}=use
        
        <div className={` ${announce ? 'blur' : ''}`}>
        <div className={`h-[50vh]  w-[75vw] bg-custom-dark-blue`}>
-       <button className='absolute top-10 right-12 bg-custom-gray py-2 px-4 rounded-xl text-custom-dark-blue' onClick={toggleAnnounce}>Announce</button>
+       {/* <button className='absolute top-10 right-12 bg-custom-gray py-2 px-4 rounded-xl text-custom-dark-blue' onClick={toggleAnnounce}>Announce</button> */}
         <p className='text-custom-orange pl-10 text-5xl pt-10'>Pending Complaints</p>
         <ComplaintList></ComplaintList>
        </div>
 
        <div className={`h-[50vh]  w-[75vw] bg-custom-dark-blue`}>
         <p className='text-custom-orange pl-10 text-5xl pt-10'>Resolved Complaints</p>
-        <ComplaintList></ComplaintList>
+        coming soon
        </div>
        </div>
        <PopupAnnounce announce={announce} toggleAnnounce={toggleAnnounce}/>
