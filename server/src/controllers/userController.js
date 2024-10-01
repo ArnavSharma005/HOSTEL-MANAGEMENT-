@@ -54,11 +54,13 @@ export const signupAdmin = async (req, res) => {
   const { name, email, hostel, mobile, password } = req.body
   //checking if admin already exist or not
   try {
+    
     const existingAdmin = await adminModel.findOne({ email })
     if (existingAdmin) {
       return res.status(400).json({ msg: "Admin already exists", error: true })
     }
     const hashedPassword = await bcrypt.hash(password, 10)
+    console.log(hashedPassword)
     const newAdmin = new adminModel({
       name,
       email,
@@ -66,11 +68,19 @@ export const signupAdmin = async (req, res) => {
       mobile,
       password: hashedPassword,
     })
+    const payload={
+      name,
+      email,
+      hostel,
+      mobile
+    }
+    const token = generateToken(payload);
     const savedAdmin = await newAdmin.save()
-
+console.log("saved")
     res.json({
       msg: "Admin registered successfully",
       data: savedAdmin,
+      token:token,
       error: false,
     })
   } catch (error) {

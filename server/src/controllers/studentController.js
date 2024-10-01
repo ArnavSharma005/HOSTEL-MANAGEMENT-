@@ -5,19 +5,19 @@ export const addIssue= async(req,res)=>{
     const Student = req.user.id;
     const RoomNo = req.user.room;
     const MobileNo = req.user.mobile;
-    const {IssueType,Description,Otp}=req.body
+    const {IssueType,Description}=req.body
     const newIssue = new Issue({
         IssueType,
         Description,
         HostelNo,
         RoomNo,
         MobileNo,
-        Otp,
         Student
     })
     try{
         const savedIssue = await newIssue.save()
         res.status(201).json(savedIssue)
+        console.log(savedIssue)
     }catch(err){
         res.status(500).json(err)
     }
