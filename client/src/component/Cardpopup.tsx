@@ -1,13 +1,15 @@
 import React, { useRef, useEffect ,useState} from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Cookies from 'js-cookie';
+import mongoose from  'mongoose'
 import axios from 'axios';
 interface PopupCardProps {
   isOpen: boolean;
   togglePopup: () => void;
+  worker :(id:mongoose.Types.ObjectId)=>void
 }
 
-const PopupCard: React.FC<PopupCardProps> = ({ isOpen, togglePopup }) => {
+const PopupCard: React.FC<PopupCardProps> = ({ isOpen, togglePopup,setWorker }) => {
 
   const [userType, setUserType] = useState('')
   const [IssueType,setIssueType]=useState('Electrical')
@@ -21,7 +23,11 @@ const PopupCard: React.FC<PopupCardProps> = ({ isOpen, togglePopup }) => {
   const cardRef = useRef<HTMLDivElement | null>(null);
    // Change this to 'worker' or 'supervisor' to test different cases
 
+   const handleWorker=(id:mongoose.Types.ObjectId)=>{
+    setWorker(id)
+   }
  
+
 
   const cardVariants = {
     hidden: { opacity: 0, y: -50 },
@@ -242,7 +248,13 @@ const PopupCard: React.FC<PopupCardProps> = ({ isOpen, togglePopup }) => {
                   </li>
                   <li>
                     <button
-                      onClick={togglePopup}
+                      onClick={
+                        ()=>{
+                          togglePopup
+                          handleWorker()
+                        }
+
+                      }
                       type="button"
                       className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-custom-dark-blue hover:bg-custom-orange focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-custom-dark-blue"
                     >
