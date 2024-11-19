@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import  { useEffect, useState } from 'react'
 import ComplaintList from '../component/ComplaintList'
 import PopupCard from '../component/Cardpopup'
 import { usePopup } from '../context api/toggle'
@@ -6,8 +6,8 @@ import PopupAnnounce from '../component/PopupAnnnounce'
 //@ts-ignore
 import Cookies from 'js-cookie';
 import Emergency from '../component/Emergency'
-import { set } from 'react-hook-form'
 import axios from 'axios'
+import { Types } from 'mongoose'
 const Dashboard = () => {
 const {isOpen,togglePopup,toggleAnnounce,emergency,announce,toggleEmergency}=usePopup()
   const [userType,setUserType]=useState('')
@@ -17,8 +17,8 @@ const {isOpen,togglePopup,toggleAnnounce,emergency,announce,toggleEmergency}=use
     
   const fetch=async()=>{
 
-  setUserType(Cookies.get('token'))
-setUser(Cookies.get('user'))
+  setUserType(Cookies.get('token')??"da")
+setUser(Cookies.get('user')??"dad")
 console.log(user)
 const x=Cookies.get('user')
 setUser(JSON.parse(x))
@@ -64,7 +64,9 @@ setUser(JSON.parse(x))
         <Emergency emergency={emergency} toggleEmergency={toggleEmergency}/>
 
 
-       <PopupCard isOpen={isOpen} togglePopup={togglePopup} />
+       <PopupCard isOpen={isOpen} togglePopup={togglePopup} setWorker={function (id: Types.ObjectId): void {
+            throw new Error('Function not implemented.')
+          } } />
         
 
         </>
@@ -107,7 +109,9 @@ setUser(JSON.parse(x))
 
    
        </div>
-       <PopupCard isOpen={isOpen} togglePopup={togglePopup} />
+       <PopupCard isOpen={isOpen} togglePopup={togglePopup} setWorker={function (id: Types.ObjectId): void {
+              throw new Error('Function not implemented.')
+            } } />
         </>
         
         )

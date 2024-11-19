@@ -2,8 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { usePopup } from '../context api/toggle';
 import Cookies from 'js-cookie';
 import PopupCard from './Cardpopup';
-import axios from 'axios';
-import mongoose from 'mongoose';
 
 const Complaint = (props) => {
   const [userType, setUserType] = useState('');
@@ -16,33 +14,19 @@ const Complaint = (props) => {
   }, []);
 
   const renderComplaintDetails = () => {
-    const { IssueType, RoomNo, MobileNo, Description ,_id } = props; // Destructure props for easier access
-
-    const assignIssue=async()=>{
-     const req =await axios.put(`http://localhost:4000/api/v1/supervisor/assignIssue/${_id}`,{Workerid:})
-
-    }
-
-    const setWorker=(val:mongoose.Types.ObjectId)=>{
-      setWorker(val)
-    }
-
-
+    const { IssueType, RoomNo, MobileNo, Description } = props; // Destructure props for easier access
 
     return (
-      <li className='grid grid-cols-8 p-4 m-2 h-14 border-2 text-sm rounded-md border-custom-dark-blue'>
+      <li className={`grid grid-cols-${userType=='supervisor'?8:6} p-4 m-2 h-14 border-2 text-sm rounded-md border-custom-dark-blue`}>
         <p>{IssueType}</p>
         <p>Room no: {RoomNo}</p>
-        <p className='col-span-3'>{Description}</p>
-        <p>{MobileNo}</p>
+        <p className='col-span-3'>Issue:{Description}</p>
+        <p>Phone:{MobileNo}</p>
         {/* Conditional rendering of the button based on user type */}
         {userType === 'supervisor' && (
           <button
-            className='bg-custom-orange rounded-[5px] py-1 hover:bg-custom-dark-blue hover:text-white ml-4 text-custom-dark-blue'
-            onClick={()=>{
-              togglePopup()
-              assignIssue()
-            }}
+            className='bg-custom-orange rounded-[5px] py-1 ml-10 hover:bg-custom-dark-blue hover:text-white  text-custom-dark-blue'
+            onClick={togglePopup}
           >
             Assign
           </button>
@@ -62,7 +46,7 @@ const Complaint = (props) => {
   return (
     <div className='text-3xl font-bold'>
       {renderComplaintDetails()}
-      <PopupCard isOpen={isOpen} togglePopup={togglePopup} worker={setWorker}/>
+      <PopupCard isOpen={isOpen} togglePopup={togglePopup} />
     </div>
   );
 };
