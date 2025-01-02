@@ -1,5 +1,5 @@
 import express from 'express';
-import {addIssue,listIssues,getIssueById} from '../controllers/studentController.js'
+import {addIssue,listIssues,getIssueById, getAllStudents} from '../controllers/studentController.js'
 import {jwtAuthMiddleware} from '../config/jwt.js'
  const StudentRouter = express.Router();
 
