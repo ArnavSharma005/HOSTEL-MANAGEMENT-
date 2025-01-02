@@ -46,3 +46,12 @@ export const getIssueById= async(req,res)=>{
     }
         
 }
+export const getAllStudents= async(req,res)=>{
+    try{
+        const students = await Student.find()
+        res.status(200).json(students)
+    }
+    catch(err){
+        res.status(500).json(err)
+    }
+}

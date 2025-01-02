@@ -43,3 +43,16 @@ export const updateIssueStatus = async (req, res) => {
     res.status(500).json({ message: error.message })
   }
 }
+
+export const getAllWorkers = async (req, res) =>{
+  try{
+    const workers = await workerModel.find()
+    res.status(200).json({
+      data: workers,
+      error: false,
+      message: "Workers fetched successfully",
+    })
+  }catch(error){
+    res.status(500).json({ message: error.message })
+  }
+}

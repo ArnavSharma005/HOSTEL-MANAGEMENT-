@@ -6,5 +6,6 @@ import {jwtAuthMiddleware} from '../config/jwt.js'
 StudentRouter.post('/student/addIssue',jwtAuthMiddleware,addIssue);
 StudentRouter.get('/student/listIssues',jwtAuthMiddleware,listIssues);
 StudentRouter.get('/student/listIssues/:id',jwtAuthMiddleware,getIssueById);
+StudentRouter.get('/student/getAllStudents',jwtAuthMiddleware,getAllStudents);
 
 export default StudentRouter;
